@@ -4,8 +4,19 @@
 //
 //  Created by Mostafa on 2/26/20.
 //  Copyright © 2020 Mostafa Osman. All rights reserved.
-//
-
+/* This program will take in a series of numbers from 1 to 1000 sperated by spaces and create a heap from it, the heaps' parent-child associations are visually printed in the end. For example, in a max heap of 678 123 90 45 it will be drawn as
+ 678
+ |
+ 90 - 123
+ 
+ this is the first association then:
+ 
+ 90
+ |
+ 45
+ 
+ Where the number at the top of each sub tree is the repsective parent
+ */
 #include <iostream>
 #include <cstring>
 #include <stdlib.h>
@@ -19,6 +30,7 @@ void heapify(int array[], int sizeInp, int root);
 void sortHeap(int array[], int sizeInp);
 void visualPrint(int array[], int size);
 void swapArray(int array[], int size);
+void deleteHeap();
 
 //int parse[100];
 int heap[100];
@@ -48,53 +60,11 @@ int main()
         cin.ignore(10000, '\n');
         cout << input << endl;
         
-        // parsing algorithim
-        char my_number [1000];
-        while (input[i] != '\0')
-        {
-            // If the input has a space then do nothing or "skip" it
-            if (input[i] == ' ')
-            {
-                
-            }
-            else
-            {
-                int z = 0;
-                for (int j = counter; j <= sizeof(input); j++)
-                {
-                    if(input[j] == ' ')
-                    {
-                        // my_number[j]='\0';
-                        counter++;
-                        z++;
-                        break;
-                    }
-                    else
-                    {
-                        // add from input array to new array
-                        my_number[z] = input[j];
-                        counter++;
-                        z++;
-                        //heap[i] = atoi(input[j]);
-                    }
-                    
-                }
-                //cout<<"my number is  "<<my_number<<"\n";
-                // convert array to int
-                heap[position] = atoi(my_number);
-                position++;
-                for (int z = 0; z < sizeof(my_number); z++)
-                {
-                    my_number[z] = '\0';
-                }
-            }
-            i++;
-        }
     }
     
     if (type == 2)
     {
-        // file input
+        // file input, credit to Omar Nassar
         cout << endl << "What is the name of the file?" << endl << ">> ";
         cin.get(fileName, 20);
         cin.clear();
@@ -108,6 +78,56 @@ int main()
             file.read(input, size);
             file.close();
         }
+        cout << input;
+    }
+    
+    // parsing algorithim
+    char my_number [100];
+    while (input[i] != '\0')
+    {
+        // If the input has a space then do nothing or "skip" it
+        if (input[i] == ' ')
+        {
+            
+        }
+        else
+        {
+            int z = 0;
+            for (int j = counter; j <= sizeof(input); j++)
+            {
+                if(input[j] == ' ')
+                {
+                    // my_number[j]='\0';
+                    counter++;
+                    z++;
+                    break;
+                }
+                else
+                {
+                    
+                    my_number[z] = input[j];
+                    counter++;
+                    z++;
+                    //heap[i] = atoi(input[j]);
+                }
+                
+            }
+            //cout<<"my number is  "<<my_number<<"\n";
+            if(atoi(my_number) == 0)
+            {
+                
+            }
+            else
+            {
+                heap[position] = atoi(my_number);
+                position++;
+                for (int z = 0; z < sizeof(my_number); z++)
+                {
+                    my_number[z] = '\0';
+                }
+            }
+        }
+        i++;
     }
     
     sortHeap(heap, position);
@@ -116,12 +136,12 @@ int main()
     swapArray(heap, position);
     printheap();
     visualPrint(heap, position);
+    deleteHeap();
     return 0;
 }
 
 void heapify(int array[], int sizeInp, int i)
 {
-    // define relationships
     int largest = i;
     int left = 2*i + 1;
     int right = 2*i + 2;
@@ -196,5 +216,15 @@ void swapArray(int array[], int size)
     for(int i = 0; i <= size/2; i++)
     {
         swap(array[i], array[size-i-1]);
+    }
+}
+
+void deleteHeap()
+{
+    cout << "\n";
+    for (int i = 0; i < position; i++)
+    {
+        cout << heap[i] << " ";
+        heap[i] = '\0';
     }
 }
