@@ -30,13 +30,15 @@ int main()
 {
     int type;
     char input[1000];
+    char fileName[10];
     cout << "How would you like to input? Direct input (1) or file input (2)" << endl;
     cin >> type;
     cin.clear();
     cin.ignore(10000, '\n');
     
+    
     int i = 0;
-    if (type == 1)
+    if (type == 1) // Compares to see which type of input
     {
         // direct input
         
@@ -46,9 +48,11 @@ int main()
         cin.ignore(10000, '\n');
         cout << input << endl;
         
-        char my_number [16];
+        // parsing algorithim
+        char my_number [1000];
         while (input[i] != '\0')
         {
+            // If the input has a space then do nothing or "skip" it
             if (input[i] == ' ')
             {
                 
@@ -67,6 +71,7 @@ int main()
                     }
                     else
                     {
+                        // add from input array to new array
                         my_number[z] = input[j];
                         counter++;
                         z++;
@@ -74,7 +79,8 @@ int main()
                     }
                     
                 }
-                cout<<"my number is  "<<my_number<<"\n";
+                //cout<<"my number is  "<<my_number<<"\n";
+                // convert array to int
                 heap[position] = atoi(my_number);
                 position++;
                 for (int z = 0; z < sizeof(my_number); z++)
@@ -89,6 +95,19 @@ int main()
     if (type == 2)
     {
         // file input
+        cout << endl << "What is the name of the file?" << endl << ">> ";
+        cin.get(fileName, 20);
+        cin.clear();
+        cin.ignore(1000000, '\n');
+        streampos size;
+        ifstream file(fileName, ios::in | ios::binary | ios::ate);
+        if (file.is_open())
+        {
+            size = file.tellg();
+            file.seekg(0, ios::beg);
+            file.read(input, size);
+            file.close();
+        }
     }
     
     sortHeap(heap, position);
@@ -102,6 +121,7 @@ int main()
 
 void heapify(int array[], int sizeInp, int i)
 {
+    // define relationships
     int largest = i;
     int left = 2*i + 1;
     int right = 2*i + 2;
@@ -156,9 +176,18 @@ void visualPrint(int array[], int size)
 {
     for(int i = 0; i <= size/2-1; i++)
     {
-        cout << "\n" <<array[i] << " ";
-        cout << array[i*2 + 1] << " ";
-        cout << array[i*2 + 2] << "\n";
+        if(array[i] != 0)
+        {
+            cout << "\n" << array[i] << "\n | ";
+        }
+        if (array[i*2 + 1] != 0)
+        {
+            cout << "\n " << array[i*2 + 1] << "-";
+        }
+        if(array[i*2 + 2] != 0)
+        {
+            cout << " " << array[i*2 + 2] << "\n";
+        }
     }
 }
 
